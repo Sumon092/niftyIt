@@ -1,9 +1,8 @@
-const express = require('express');
+// const express = require('express');
 
-const router = express.Router();
+// const router = express.Router();
 
-router.post('/signup', signup);
-router.post('/signIn', signIn);
+// router.post('/signup', signup);
+// router.post('/signIn', signIn);
 
-
-module.exports = router;
+// module.exports = router;
