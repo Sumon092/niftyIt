@@ -41,3 +41,20 @@ exports.login = async (req, res, next) => {
         next(err)
     }
 }
+
+// update a user
+exports.updateUser = async (req, res, next) => {
+
+    let conditions = { _id: req.params.id }
+    User.updateOne(conditions, req.body)
+        .then(doc => {
+            if (!doc) {
+                return res.status(404).end();
+            }
+            else {
+                return res.status(200).json(doc);
+            }
+
+        }).catch(error => next(error))
+};
+

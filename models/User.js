@@ -9,6 +9,14 @@ const UserSchema = new mongoose.Schema({
         type: String,
         default: "10-10-1997"
     },
+    isSubscribed: {
+        type: Boolean,
+        default: false,
+    },
+    price: {
+        type: Number,
+        default: 10
+    },
     email: {
         type: String,
         trim: true,
@@ -20,6 +28,7 @@ const UserSchema = new mongoose.Schema({
         type: String,
         required: [true, "Password is required"]
     },
+
     confirmPassword: {
         type: String,
         required: [true, "Please confirm your Password"],
