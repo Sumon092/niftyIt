@@ -1,10 +1,13 @@
 const { mongoose } = require('mongoose');
 
+
 const UserSchema = new mongoose.Schema({
     name: {
         type: String,
     },
-    gender: String,
+    gender: {
+        type: String,
+    },
     birthDay: {
         type: String,
         default: "10-10-1997"
@@ -31,7 +34,7 @@ const UserSchema = new mongoose.Schema({
 
     confirmPassword: {
         type: String,
-        required: [true, "Please confirm your Password"],
+        // required: [true, "Please confirm your Password"],
     },
     role: {
         type: String,

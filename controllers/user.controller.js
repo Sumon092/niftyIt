@@ -2,17 +2,17 @@ const bcrypt = require('bcryptjs');
 const User = require("../models/User.js");
 const jwt = require('jsonwebtoken');
 const createError = require('../middlewares/error.middleware.js');
+const mongoose = require('mongoose');
 
 // create user
 exports.signup = async (req, res, next) => {
-
+    console.log('api heated');
     const salt = await bcrypt.genSalt(10);
     const hash = await bcrypt.hash(req.body.password, salt);
     const newUser = new User({ ...req.body, password: hash });
-
     try {
         await newUser.save();
-        res.status(200).send('user added successfully');
+        return res.status(200).send('user added successfully');
     } catch (err) {
         next(err)
     }
@@ -20,6 +20,7 @@ exports.signup = async (req, res, next) => {
 
 // login user
 exports.login = async (req, res, next) => {
+    console.log("login api heated");
     try {
         const user = await User.findOne({ email: req.body.email });
         if (!user) {
@@ -44,7 +45,8 @@ exports.login = async (req, res, next) => {
 
 // update a user
 exports.updateUser = async (req, res, next) => {
-
+    var id = mongoose.Types.ObjectId();
+    if (!mongoose.Types.ObjectId.isValid(id)) return false;
     let conditions = { _id: req.params.id }
     User.updateOne(conditions, req.body)
         .then(doc => {
