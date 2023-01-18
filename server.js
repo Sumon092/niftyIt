@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
 const dotenv = require("dotenv").config();
-const dbConnect = require("./utils/dbConnect.js")
-
+const dbConnect = require("./utils/dbConnect.js");
 const app = require("./app");
 
 

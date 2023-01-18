@@ -82,3 +82,51 @@ exports.getUser = async (req, res, next) => {
     }
 };
 
+const stripe = require('stripe')('sk_test_51MRMo9DneZwkHD1NG0lUMkockAoXpwud90RogHf1GEeCJZTg4A9hJbAfSchhkvGMKopt0BfZF8h4rYBInCClQ4RH00oHRFvsUn');
+
+exports.apiStripe = async (req, res) => {
+    try {
+        const booking = req.body;
+        const price = booking.price;
+        const amount = price * 100;
+        const paymentIntent = await stripe.paymentIntents.create({
+            currency: 'usd',
+            amount: amount,
+            "payment_method_types": [
+                "card"
+            ]
+        });
+        res.status(200).text({
+            clientSecret: paymentIntent.client_secret,
+        })
+        console.log('No error.');
+    } catch (e) {
+        switch (e.type) {
+            case 'StripeCardError':
+                console.log(`A payment error occurred: ${e.message}`);
+                break;
+            case 'StripeInvalidRequestError':
+                console.log('An invalid request occurred.');
+                break;
+            default:
+                console.log('Another problem occurred, maybe unrelated to Stripe.');
+                break;
+        }
+    }
+}
+
+exports.updatePayment = async (req, res) => {
+    const payment = req.body;
+    const result = await User.insertOne(payment);
+    const id = payment.bookingId
+    const filter = { _id: ObjectId(id) }
+    const updatedDoc = {
+        $set: {
+            paid: true,
+            transactionId: payment.transactionId
+        }
+    }
+    const updatedResult = await bookingsCollection.updateOne(filter, updatedDoc)
+    res.send(result);
+}
+
